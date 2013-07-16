@@ -10,10 +10,7 @@
     <!-- Le styles -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <link href="/css/hilight.css" rel="stylesheet">
-    <script type="text/javascript" src="/js/highlight.min.js">
-      hljs.initHighlightingOnLoad();
-    </script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
     <style>
       body {
         padding-top: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -25,6 +22,9 @@
 	overflow: auto;
 	border: 1px solid #888;
 	background-color: #eee;
+      }
+      #bin .row {
+        padding-top: 20px;
       }
     </style>
 
@@ -40,8 +40,8 @@
    <div class="container">
      <div class="row">
       	<div class="col col-lg-12 col-sm-12">
-       	  <h1>Paste<small>me</small>.it~</h1>
- 	    <small class="">Minimal yet elegant pastebin.</small>
+       	  <h1 >Paste<small>me</small>.it~</h1>
+ 	    <small class="text-muted">Minimal yet elegant pastebin.</small>
       	  </div>
        </div>
      </div> 
@@ -56,17 +56,31 @@
     
     </div>
   </div>
+</div>
+<div id="bin">
+ <div class="container">
   <div class="row">
     <div class="col col-lg-12 col-sm-12">
-      <textarea id="bin" rows="20" placeholder="
-if(wantToShare(datas) > 0) { paste.make(); } else { gtfo(); }"></textarea>
+      <textarea rows="20" placeholder="if(wantToShare(datas) > 0) { paste.make(); } else { gtfo(); }"></textarea>
+    </div>
+  </div> 
+ </div>
+ <div class="container">
+  <div class="row">
+    <div class="col col-lg-9 col-sm-9">
+    </div>
+    <div class="col col-lg-1 col-sm-1">
+      <a class="btn btn-danger btn-block btn-small" href="">Reset</a>
+    </div>
+    <div class="col col-lg-2 col-sm-2">
+      <p>
+        <a id="submitpaste" class="btn  btn-success btn-block btn-medium" href=""><i class="icon-plus"></i> New Paste</a>
+      </p>
     </div>
   </div>
-  <div id="buttons" class="row">
-   
-
-  </div>
+ </div>
 </div>
+
 <!-- /CONTENT
 =================================-->
 </div><!-- end: Wrap all page content here -->
@@ -81,10 +95,19 @@ if(wantToShare(datas) > 0) { paste.make(); } else { gtfo(); }"></textarea>
 </div>
 <!-- /Footer
 =================================-->
-	<script type="text/javascript" src="/js/jquery.js"></script>
-	<script type="text/javascript" src="/js/sammy-latest.min.js"></script>
-	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/jquery.syntaxhighlighter.min.js"></script>
+    <script type="text/javascript">
+            $.SyntaxHighlighter.init({
+                'baseUrl': '/css',
+                'prettifyBaseUrl': '/js'
+                });
+    </script>
+    <script type="text/javascript" src="/js/sammy-latest.min.js"></script>
+    <script type="text/javascript" src="/js/sammy.template.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/moment.min.js"></script> 
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
   </body>
 </html>
 

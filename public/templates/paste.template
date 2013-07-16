@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col col-lg-10 col-sm-10">
+    <% if (paste.master != null) { %>
+      <ul class="breadcrumb">
+        <li><i class="icon-sitemap"></i> <a href="http://pasteme.it/view/<%= paste.master %>"><%= paste.master %></a> [master]</li>
+        <li><%= paste.id %> <small class="text-muted">(<%= moment(paste.date).fromNow() %>)</small></li>
+      </ul>
+    <% }  else {                   %>
+      <ul class="breadcrumb">
+        <li><i class="icon-sitemap"></i> <%= paste.id %> [master] <small class="text-muted">(<%= moment(paste.date).fromNow() %>)</small></li>
+      </ul>
+    <% }                           %>
+  </div>
+  <div class="col col-lg-2 col-sm-2 text-right">
+    <p>
+    <a class="btn btn-primary btn-small" href="/fork/<%= paste.id %>"><i class="icon-code-fork"></i> Fork</a>
+    <a id="newpaste" class="btn btn-success btn-small" href="#"><i class="icon-plus"></i> New</a>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col col-lg-12 col-sm-12">
+    <pre class="highlight"><%= paste.body %></pre>
+  </div>
+</div>

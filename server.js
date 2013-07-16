@@ -1,12 +1,17 @@
 var express = require('express'),
     ent = require('ent'),
     http = require('http'),
+    moment = require('moment'),
     cradle = require('cradle');
 
 var app = express(),
-    couch = new(cradle.Connection)().database('pasteme.it');
+    now = moment();
+    couch = new(cradle.Connection)().database('pastemeit');
 
+app.enable('trust proxy');
 app.configure(function() {
+  app.use(express.logger());
+  app.use(express.compress());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -22,8 +27,13 @@ app.get('/api/:id', function(req, res) {
         response = { 'error': 'Not found' };
         res.send(response);
       }
-      response = { 'id': req.params.id, 'body': doc.paste.content };
-
+      response = { 
+	'id': req.params.id, 
+	'body': doc.paste.content, 
+	'master': doc.paste.master ? doc.paste.master : null,
+	'date': doc.paste.date
+      };
+      res.send(response, 200);
     });
   }
   else {
@@ -35,16 +45,17 @@ app.get('/api/:id', function(req, res) {
 app.post('/api', function (req, res) {
   if(req.body.paste) {
     re = req.body.paste;
-    if(re.content.length() > 0) {
+    if(re.content.length > 0) {
       paste = {
         'content': ent.encode(re.content),
         'source': req.ip,
         'headers': req.headers,
-        'date': new Date().UTC()
+        'date': Date.now(),
+        'master': re.master ? re.master : null
       };
       couch.save('', { 'paste': paste }, function (err, response) {
         if (err) {
-          res.send({'error': 'Failed to save'}, 500);
+          res.send({'error': 'Failed to save', 'message': err}, 500);
         }
         res.send({'id': response.id, 'content': paste.content }, 200);
       });
