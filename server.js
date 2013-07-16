@@ -58,6 +58,23 @@ app.post('/api', function (req, res) {
           res.send({'error': 'Failed to save', 'message': err}, 500);
         }
         res.send({'id': response.id, 'content': paste.content }, 200);
+        if (paste.master != null) {
+          couch.get(paste.master, function (err,doc) {
+            if (err) { console.log(err); };
+            if ((doc.paste.forks instanceof Array) && doc.paste.forks != undefined) {
+              doc.paste.forks.push(response.id);
+              couch.save(paste.master, doc, function (err, data) {
+                if(err) { console.log(err); };
+              });
+            }
+            else {
+	      doc.paste.forks = [response.id];
+              couch.save(paste.master, doc, function (err, data) {
+                if(err) { console.log(err); };
+              });
+            }
+          });
+        }
       });
     }
     else {
