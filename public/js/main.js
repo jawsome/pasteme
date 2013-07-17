@@ -1,22 +1,4 @@
 (function($) {
-
-function selectText(element) {
-    var doc = document
-        , text = doc.getElementById(element)
-        , range, selection
-    ;    
-    if (doc.body.createTextRange) { //ms
-        range = doc.body.createTextRange();
-        range.moveToElementText(text);
-        range.select();
-    } else if (window.getSelection) { //all others
-        selection = window.getSelection();        
-        range = doc.createRange();
-        range.selectNodeContents(text);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-}
   var app = $.sammy(function() {
     this.use('Template');
     this.get('(/)', function(context) {
@@ -29,10 +11,11 @@ function selectText(element) {
             dataType: 'json',
             data: { 'paste': {'content': $('#bin textarea').val()} },
             beforeSend: function () {
-             $('#bin h3').append('<i class="icon-refresh icon-spin icon-large"></i>');
+             $('#bin textarea').attr('disabled');
+             $('#pastearea').prepend('<div class="progress progress-striped active">  <div class="progress-bar" style="width: 100%"></div></div>');
             },
             success: function(data) {
-              $('#bin h3').html('');
+              $('#pastearea .progress').remove();
               window.location = '/view/' +  data.id;
             }
           });
@@ -49,15 +32,13 @@ function selectText(element) {
         beforeSend: function() {
           console.log('Before send.');
           $('#bin').hide();
-          $('#pastearea').html('<i class="icon-refresh icon-spin icon-large"></i>');
+          $('#pastearea').prepend('<div class="progress progress-striped active">  <div class="progress-bar" style="width: 100%"></div></div>');
         },
         success: function(data) {
+          $('#pastearea .progress').remove();
           console.log(data, 'json');
           context.render('/templates/paste.template', {paste: data}).replace('#pastearea').then(function() {
             $('pre').syntaxHighlight();
-            $('#newpaste').click(function() {
-              window.location = '/';
-            });
 	  });
         }
       });
@@ -69,9 +50,10 @@ function selectText(element) {
         url: '/api/' + this.params['id'],
         dataType: 'json',
         beforeSend: function() {
-          console.log('Before send.');
+          $('#pastearea').prepend('<div class="progress progress-striped active">  <div class="progress-bar" style="width: 100%"></div></div>');
         },
         success: function(data) {
+          $('#pastearea .progress').remove();
           console.log(data, 'json');
             $('#bin textarea').val($('<div/>').html(data.body).text());
             $('#pastearea').hide();
@@ -82,8 +64,12 @@ function selectText(element) {
             url: '/api',
             type: 'POST',
             dataType: 'json',
+            beforeSend: function() {
+             $('#pastearea').prepend('<div class="progress progress-striped active">  <div class="progress-bar" style="width: 100%"></div></div>');
+            },
             data: { 'paste': {'content': $('#bin textarea').val(), 'master': context.params['id'] } },
             success: function(data) {
+              $('#pastearea .progress').remove();
               window.location = '/view/' +  data.id;
             }
           });

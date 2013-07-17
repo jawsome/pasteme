@@ -14,7 +14,7 @@
   <div class="col col-lg-2 col-sm-2 text-right">
     <p>
     <a class="btn btn-primary btn-small" href="/fork/<%= paste.id %>"><i class="icon-code-fork"></i> Fork</a>
-    <a id="newpaste" class="btn btn-success btn-small" href="#"><i class="icon-plus"></i> New</a>
+    <a id="newpaste" class="btn btn-success btn-small" href="/"><i class="icon-plus"></i> New</a>
     </p>
   </div>
 </div>
@@ -23,3 +23,13 @@
     <pre class="highlight"><%= paste.body %></pre>
   </div>
 </div>
+<% if (paste.forks != undefined && paste.forks.length > 0) { %>
+<div class="row">
+  <div class="col col-lg-12 col-sm-12">
+      <h4>Forks for <%= paste.id %>:</h4>
+	<ul class="inline-block">
+         <% $.each(paste.forks, function(index, value) { %>
+           <li class="list-inline"><a href="http://pasteme.it/view/<%= value %>"><%= value %></a></li>
+         <% }); 					 %>
+</div>
+<% } 							     %>
