@@ -28,7 +28,11 @@ function selectText(element) {
             type: 'POST',
             dataType: 'json',
             data: { 'paste': {'content': $('#bin textarea').val()} },
+            beforeSend: function () {
+             $('#bin h3').append('<i class="icon-refresh icon-spin icon-large"></i>');
+            },
             success: function(data) {
+              $('#bin h3').html('');
               window.location = '/view/' +  data.id;
             }
           });
@@ -45,7 +49,7 @@ function selectText(element) {
         beforeSend: function() {
           console.log('Before send.');
           $('#bin').hide();
-          $('#pastearea').html('Loading...');
+          $('#pastearea').html('<i class="icon-refresh icon-spin icon-large"></i>');
         },
         success: function(data) {
           console.log(data, 'json');
