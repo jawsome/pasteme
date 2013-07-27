@@ -2,6 +2,10 @@
   var app = $.sammy(function() {
     this.use('Template');
     this.get('(/)', function(context) {
+      $('#resetPaste').click(function() {
+        $('#bin textarea').val('');
+      });
+      $('#pastearea').html('');
       $('#bin').show();
       $('#submitpaste').click(function() {
         if($('#bin textarea').val() != ""){

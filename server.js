@@ -31,7 +31,8 @@ app.get('/api/:id', function(req, res) {
 	'id': req.params.id, 
 	'body': doc.paste.content, 
 	'master': doc.paste.master ? doc.paste.master : null,
-	'date': doc.paste.date
+	'date': doc.paste.date,
+        'forks': doc.paste.forks ? doc.paste.forks : null
       };
       res.send(response, 200);
     });
